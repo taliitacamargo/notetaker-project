@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-// const readFromFile = util.promisify(fs.readFile);
+const { readFromFile } = require("./public/assets/helpers/fsUtils");
 const uuid = require('./public/assets/helpers/uuid');
 
 const notes = require('./db/db.json');
@@ -15,10 +15,6 @@ app.use(express.static('public'));
 
 app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
-);
-
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
 app.get('/api/notes', (req, res) => {
@@ -61,6 +57,30 @@ app.post('/api/notes', (req, res) => {
   res.status(500). json('Error in posting new note');
 }
 });
+
+
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/index.html'))
+);
+
+
+
+app.delete("/api/notes/:id",(req,res)=> {
+  console.log("this deletes routes: ");
+  // const getNotes = notes;
+  // console.log(getNotes);
+  const getNotes = notes.filter(val => val.id !== req.params.id)
+  // const newNotes = getNotes.filter((note) => note.id !== req.params.id)
+  fs.writeFileSync("./db/db.json", JSON.stringify(notes))
+  // notes = newNotes
+  // console.log(newNotes);
+  res.send(getNotes)
+})
+
+app.get('/api/notes/:id', (req, res) =>
+res.json(notes.find(val => val.id)));
+
+
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
