@@ -34,7 +34,8 @@ app.post('/api/notes', (req, res) => {
       id: uuid(),
     };
     console.log("notes is:", notes);
-    console.log("note: ", text);
+    console.log("
+    te: ", text);
     console.log("newNote: ",newNote);
 
     notes.push(newNote)
