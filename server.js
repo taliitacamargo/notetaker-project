@@ -75,8 +75,8 @@ app.delete("/api/notes/:id",(req,res)=> {
 
   // const newNotes = getNotes.filter((note) => note.id !== req.params.id)
   fs.writeFileSync("./db/db.json", JSON.stringify(getNotes))
-  console.log(notes);
-  console.log(getNotes);
+  console.log( "logging notes on delete function: ", notes);
+  console.log("logging getNotes on delete function: ",getNotes);
   // notes = newNotes
   // console.log(newNotes);
   res.send(getNotes)
