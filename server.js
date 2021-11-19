@@ -4,6 +4,7 @@ const fs = require('fs');
 const { readFromFile } = require("./public/assets/helpers/fsUtils");
 const uuid = require('./public/assets/helpers/uuid');
 
+
 const notes = require('./db/db.json');
 
 const PORT = process.env.port || 3001;
@@ -30,7 +31,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = {
       title,
       text,
-      note_id: uuid(),
+      id: uuid(),
     };
     console.log("notes is:", notes);
     console.log("note: ", text);
@@ -67,15 +68,20 @@ app.get('*', (req, res) =>
 
 app.delete("/api/notes/:id",(req,res)=> {
   console.log("this deletes routes: ");
+  // notes = JSON.parse(notes)
   // const getNotes = notes;
   // console.log(getNotes);
   const getNotes = notes.filter(val => val.id !== req.params.id)
+
   // const newNotes = getNotes.filter((note) => note.id !== req.params.id)
-  fs.writeFileSync("./db/db.json", JSON.stringify(notes))
+  fs.writeFileSync("./db/db.json", JSON.stringify(getNotes))
+  console.log(notes);
+  console.log(getNotes);
   // notes = newNotes
   // console.log(newNotes);
   res.send(getNotes)
 })
+
 
 app.get('/api/notes/:id', (req, res) =>
 res.json(notes.find(val => val.id)));
