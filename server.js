@@ -5,7 +5,7 @@ const { readFromFile } = require("./public/assets/helpers/fsUtils");
 const uuid = require('./public/assets/helpers/uuid');
 
 
-const notes = require('./db/db.json');
+var notes = require('./db/db.json');
 
 const PORT = process.env.port || 3001;
 const app = express();
@@ -34,8 +34,7 @@ app.post('/api/notes', (req, res) => {
       id: uuid(),
     };
     console.log("notes is:", notes);
-    console.log("
-    te: ", text);
+    console.log("note is: ", text);
     console.log("newNote: ",newNote);
 
     notes.push(newNote)
@@ -64,20 +63,14 @@ app.get('*', (req, res) =>
 );
 
 
-
-app.delete("/api/notes/:id",(req,res)=> {
+app.delete("/api/notes/:id",(req,res) => {
+  readFromFile('./db/db.json')
+  .then((file_notes) => notes = JSON.parse(file_notes));
   console.log("this deletes routes: ");
-  // notes = JSON.parse(notes)
-  // const getNotes = notes;
-  // console.log(getNotes);
   const getNotes = notes.filter(val => val.id !== req.params.id)
-
-  // const newNotes = getNotes.filter((note) => note.id !== req.params.id)
   fs.writeFileSync("./db/db.json", JSON.stringify(getNotes))
   console.log( "logging notes on delete function: ", notes);
   console.log("logging getNotes on delete function: ",getNotes);
-  // notes = newNotes
-  // console.log(newNotes);
   res.send(getNotes)
 })
 
