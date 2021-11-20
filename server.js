@@ -4,7 +4,7 @@ const fs = require('fs');
 const { readFromFile } = require("./public/assets/helpers/fsUtils");
 const uuid = require('./public/assets/helpers/uuid');
 var notes = require('./db/db.json');
-const api = require('./public/assets/js/index')
+const api = require('./public/assets/js/index.js')
 
 const PORT = process.env.port || 3001;
 const app = express();
